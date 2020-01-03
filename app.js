@@ -3,10 +3,10 @@ const express=require('express');
 const app=express();//create an express application and stored it in a constant named app
                     //always running express as a function
 app.get('/favicon.ico', (req, res) => res.status(204));
-app.use('/',(req,res,next)=>{
-    console.log('Runs!');//This always runs
-    next();
-});
+    // app.use('/',(req,res,next)=>{
+    //     console.log('Runs!');//This always runs
+    //     next();
+    // });
 app.use('/add-product',(req,res,next)=>{
     console.log('In the middleware');
     res.send('<form action="/" method="POST"><input type="text" name="title"><button type="submit">Add Product</button></form>');
@@ -20,12 +20,13 @@ app.use('/add-product',(req,res,next)=>{
 
 //we need a route or a middleware that handles requests to product(the data submitted in add-product was sent to product page)
 app.use('/product',(req,res,next)=>{
-    console.log(res.body);
+    console.log(req.body);//reuest gives us the body property but by default, request doesn't try to parse the incoming request body
+    //we need to register a parser and we do that by adding another middleware.
     res.redirect('/');
 });
 
 app.use('/',(req,res,next)=>{
-    console.log('In Another middleware');
+    //console.log('In Another middleware');
     res.send('<h1>Hello from /</h1>');
 });
 //const server=http.createServer(app);
