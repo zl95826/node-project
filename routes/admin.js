@@ -1,11 +1,12 @@
 //const http= require('http');//import http module
 const express=require('express'); 
 const path=require('path');
+const rootDir=require('../util/path');
 const router=express.Router();
 // /admin/add-product => GET
 router.get('/add-product',(req,res,next)=>{
    
-   res.sendFile(path.join(__dirname,'../','views','add-product.html'))
+   res.sendFile(path.join(rootDir,'views','add-product.html'))
     //action attribute=the path/the url, to which the requests should be sent
    // res.write('<h1>Product Page</h1>');next();//Without next(), the request can't continue its journey, so it will never reach a place 
     //where we might send a response, so use the method send
