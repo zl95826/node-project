@@ -1,5 +1,6 @@
 //const http= require('http');//import http module
 const express=require('express'); 
+const path=require('path');
 const bodyParser=require('body-parser');
 const app=express();//create an express application and stored it in a constant named app
                     //always running express as a function
@@ -9,7 +10,7 @@ const shopRoutes=require('./routes/shop');
  app.use('/admin',adminRoutes);
  app.use(shopRoutes);  
  app.use((req,res,next)=>{
-     res.status(404).send('<h1>Page not found</h1>')
+     res.status(404).sendFile(path.join(__dirname,'view','404.html'))
  })
  app.listen(3000);             
 //app.get('/favicon.ico', (req, res) => res.status(204));
