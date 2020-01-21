@@ -4,6 +4,7 @@ const path=require('path');
 const rootDir=require('../util/path');
 const router=express.Router();
 // /admin/add-product => GET
+const products=[];
 router.get('/add-product',(req,res,next)=>{
    
    res.sendFile(path.join(rootDir,'views','add-product.html'))
@@ -22,9 +23,10 @@ router.get('/add-product',(req,res,next)=>{
 router.post('/add-product',(req,res,next)=>{
     console.log(req.body);//request gives us the body property but by default, request doesn't try to parse the incoming request body
     //we need to register a parser and we do that by adding another middleware.
+    products.push({title:req.body.title});
     res.redirect('/');
 });//using use, the middleware always executes not just for post requests but also for get requests
 //So here we change use to post to limit middleware execution only for post requests
 
-
-module.exports=router;
+exports.routes=router;
+exports.products=products;

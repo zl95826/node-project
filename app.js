@@ -4,13 +4,14 @@ const path=require('path');
 const bodyParser=require('body-parser');
 const app=express();//create an express application and stored it in a constant named app
                     //always running express as a function
-const adminRoutes=require('./routes/admin');
+const adminData=require('./routes/admin');
 const shopRoutes=require('./routes/shop');
  app.use(bodyParser.urlencoded({extended:false})); 
- app.use('/admin',adminRoutes);
+ app.use(express.static(path.join(__dirname,'public')));//for loading static assets like images, css
+ app.use('/admin',adminData.routes);
  app.use(shopRoutes);  
  app.use((req,res,next)=>{
-     res.status(404).sendFile(path.join(__dirname,'view','404.html'))
+     res.status(404).sendFile(path.join(__dirname,'views','404.html'))
  })
  app.listen(3000);             
 //app.get('/favicon.ico', (req, res) => res.status(204));
