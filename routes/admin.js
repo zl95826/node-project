@@ -6,9 +6,8 @@ const router=express.Router();
 // /admin/add-product => GET
 const products=[];
 router.get('/add-product',(req,res,next)=>{
-   
-   res.sendFile(path.join(rootDir,'views','add-product.html'))
-    //action attribute=the path/the url, to which the requests should be sent
+   res.render('add-product',{pageTitle:'Add Product'});
+   //res.sendFile(path.join(rootDir,'views','add-product.html'));
    // res.write('<h1>Product Page</h1>');next();//Without next(), the request can't continue its journey, so it will never reach a place 
     //where we might send a response, so use the method send
 });//use method allows us to add a middleware function
