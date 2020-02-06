@@ -2,10 +2,29 @@
 const express=require('express'); 
 const path=require('path');
 const bodyParser=require('body-parser');
+const expressHbs=require('express-handlebars');//we manually have to tell express that there is such an express handlebars engine available
 const app=express();//create an express application and stored it in a constant named app
                     //always running express as a function
-app.set('view engine','pug');
+app.engine('hbs',expressHbs(
+    {   layoutsDir:'views/layouts/', //it allows you to set up where my layouts lives, so which folder I can find my layouts
+        defaultLayout:'main-layout',//define a default layout that should be used for all files
+        extname: 'hbs'
+    }
+));//register a new template engine in case we use one which is not build-in. 
+   //Express handlebars is not built-in, but pug is,so pug doesn't need this step.
+   //the first argument we define a name for our engine                
+app.set('view engine','hbs');
 app.set('views','views');
+// let db;
+// const mongodb=require('mongodb');
+// const MongoClient=mongodb.MongoClient;
+// const mongoConnect=()=>{
+//     MongoClient.connect('mongodb+srv://bettyMongo:bijd1eIx516mZxYi@cluster0-i8ieo.mongodb.net/test?retryWrites=true&w=majority')
+//     .then(client=>{console.log('connected!');db=client.db();db.collection('products').insertOne({book:'red'});})
+//     .catch(err=>{console.log(err);throw err;});
+// }
+// mongoConnect();;
+
 const adminData=require('./routes/admin');
 const shopRoutes=require('./routes/shop');
  app.use(bodyParser.urlencoded({extended:false})); 
@@ -14,7 +33,7 @@ const shopRoutes=require('./routes/shop');
  app.use(shopRoutes);  
  app.use((req,res,next)=>{
      //res.status(404).sendFile(path.join(__dirname,'views','404.html'))
-     res.status(404).render('404');
+     res.status(404).render('404',{pageTitle:'Page Found'});
  })
  app.listen(3000);             
 //app.get('/favicon.ico', (req, res) => res.status(204));
