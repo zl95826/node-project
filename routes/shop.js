@@ -5,8 +5,9 @@ const rootDir=require('../util/path');
 const adminData=require('./admin');
 router.get('/',(req,res,next)=>{
     const products=adminData.products;
-    res.render('shop',{prods:products,pageTitle:'Shop',path:'/',hasProducts:products.length>0,activeShop:true,layout:true
+    res.render('shop',{prods:products,pageTitle:'Shop',path:'/',hasProducts:products.length>0,activeShop:true
 //layout a special key that is understood by handlebars and it would not use the default layout if set it to false
+//you cannot set the layout:true, otherwise error happens
 });
     //this is provided by expressjs and it will use the default templating engine and then return that template
     //If we use pug as the templating engine, it will look for .pug files, here shop.pug a templating file, the first argument is the template
