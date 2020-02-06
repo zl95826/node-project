@@ -6,7 +6,7 @@ const router=express.Router();
 // /admin/add-product => GET
 const products=[];
 router.get('/add-product',(req,res,next)=>{
-   res.render('add-product',{pageTitle:'Add Product'});
+   res.render('add-product',{pageTitle:'Add Product',activeAddProduct:true,formsCSS:true,productCSS:true});
    //res.sendFile(path.join(rootDir,'views','add-product.html'));
    // res.write('<h1>Product Page</h1>');next();//Without next(), the request can't continue its journey, so it will never reach a place 
     //where we might send a response, so use the method send

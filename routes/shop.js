@@ -5,10 +5,13 @@ const rootDir=require('../util/path');
 const adminData=require('./admin');
 router.get('/',(req,res,next)=>{
     const products=adminData.products;
-    res.render('shop',{prods:products,docTitle:'Shop',path:'/',hasProducts:products.length>0});//this is provided by expressjs and it will use the default templating engine and then return that template
-                       //If we use pug as the templating engine, it will look for .pug files, here shop.pug a templating file, the first argument is the template
-                       //We can add second argument to the render method to pass in data, it must be an object where
-                       //we map it(=the data) to a key name which we then can use in the template to refer to the data we're passing in
+    res.render('shop',{prods:products,pageTitle:'Shop',path:'/',hasProducts:products.length>0,activeShop:true,layout:true
+//layout a special key that is understood by handlebars and it would not use the default layout if set it to false
+});
+    //this is provided by expressjs and it will use the default templating engine and then return that template
+    //If we use pug as the templating engine, it will look for .pug files, here shop.pug a templating file, the first argument is the template
+    //We can add second argument to the render method to pass in data, it must be an object where
+    //we map it(=the data) to a key name which we then can use in the template to refer to the data we're passing in
     //console.log('shop.js',adminData.products);
     //res.sendFile(path.join(rootDir,'views','shop.html'));
     //res.sendFile(path.join(__dirname,'..','views','shop.html'));//don't add slashes before the folder name like /views
