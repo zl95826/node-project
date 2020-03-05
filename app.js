@@ -5,36 +5,40 @@ const bodyParser=require('body-parser');
 const expressHbs=require('express-handlebars');//we manually have to tell express that there is such an express handlebars engine available
 const app=express();//create an express application and stored it in a constant named app
                     //always running express as a function
-app.engine('hbs',expressHbs(
-    {   layoutsDir:'views/layouts/', //it allows you to set up where my layouts lives, so which folder I can find my layouts
-        defaultLayout:'main-layout',//define a default layout that should be used for all files
-        extname: 'hbs'
-    }
-));//register a new template engine in case we use one which is not build-in. 
+//app.engine('hbs',expressHbs(
+   // {   layoutsDir:'views/layouts/', //it allows you to set up where my layouts lives, so which folder I can find my layouts
+    //    defaultLayout:'main-layout',//define a default layout that should be used for all files
+    //    extname: 'hbs'
+  //  }
+//));//register a new template engine in case we use one which is not build-in. 
    //Express handlebars is not built-in, but pug is,so pug doesn't need this step.
    //the first argument we define a name for our engine                
-app.set('view engine','hbs');
+//app.set('view engine','hbs');
+const errorController=require('./controllers/error');
+app.set('view engine','ejs');
 app.set('views','views');
-// let db;
-// const mongodb=require('mongodb');
-// const MongoClient=mongodb.MongoClient;
-// const mongoConnect=()=>{
-//     MongoClient.connect('mongodb+srv://bettyMongo:bijd1eIx516mZxYi@cluster0-i8ieo.mongodb.net/test?retryWrites=true&w=majority')
-//     .then(client=>{console.log('connected!');db=client.db();db.collection('products').insertOne({book:'red'});})
-//     .catch(err=>{console.log(err);throw err;});
-// }
-// mongoConnect();;
+// let db;无用
+//  const mongodb=require('mongodb');//gives us access to the mongodb package
+//  const MongoClient=mongodb.MongoClient;
 
-const adminData=require('./routes/admin');
+//  const mongoConnect=()=>{
+//     //针对下面一行：use the connect method to create a connection to mongodb, return a promise object
+//     //  MongoClient.connect('mongodb+srv://bettyMongo:bijd1eIx516mZxYi@cluster0-i8ieo.mongodb.net/test?retryWrites=true&w=majority',{useNewUrlParser: true, useUnifiedTopology: true})
+//     // .then(client=>{console.log('connected!');db=client.db("test");db.collection('products').insertOne({movie:'Big Cat'});
+//     //client.close();
+// })
+// //在then这一行参数client：means no errors, we get the connected/(if no existing) newly created | database.方法client.db("test")给db换一个名字，如果不给，默认名字是test。
+//     .catch(err=>{console.log(err);throw err;});
+//  }
+//  mongoConnect();;
+
+const adminRoutes=require('./routes/admin');
 const shopRoutes=require('./routes/shop');
  app.use(bodyParser.urlencoded({extended:false})); 
  app.use(express.static(path.join(__dirname,'public')));//for loading static assets like images, css
- app.use('/admin',adminData.routes);
+ app.use('/admin',adminRoutes);
  app.use(shopRoutes);  
- app.use((req,res,next)=>{
-     //res.status(404).sendFile(path.join(__dirname,'views','404.html'))
-     res.status(404).render('404',{pageTitle:'Page Not Found'});
- })
+ app.use(errorController.get404);
  app.listen(3000);             
 //app.get('/favicon.ico', (req, res) => res.status(204));
     // app.use('/',(req,res,next)=>{
