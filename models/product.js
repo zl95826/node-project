@@ -2,29 +2,25 @@ const fs=require('fs');
 const path=require('path');
 //const products=[]; 
 //we can save our product to a file instead of an array, so we need to work with the file system and import fs
+const p=path.join(path.dirname(process.mainModule.filename),'data','products.json');
+const getProductsFromFile=callback=>{
+  
+        fs.readFile(p,(err,contentFile)=>{
+          if(err) {callback([]);}
+          else callback(JSON.parse(contentFile));}); 
+}
 module.exports=class Product {
     constructor(t) {
        this.title=t; 
     }
     save() {
-        const p=path.join(path.dirname(process.mainModule.filename),'data','products.json');
-        fs.readFile(p,(err,contentFile)=>{//since this is a json file, so the content of file should be in json format
-          let products=[];  
-          if(!err) {//Just means "if there is no error, then run this block of code".
-            products=JSON.parse(contentFile);//parse data to JS object
-          }
+        getProductsFromFile(products=>{ 
           products.push(this);
-          fs.writeFile(p,JSON.stringify(products),err=>{
+          fs.writeFile(p,JSON.stringify(products),err=>{//the callback get executed after finishing writing file
               if(err) throw err;
-              console.log(' write file')});
-        });
+              console.log(' write file')});});
     }
     static fetchAll(callback) {
-        const p=path.join(path.dirname(process.mainModule.filename),'data','products.json');
-        fs.readFile(p,(err,contentFile)=>{
-          if(err) {
-           cb([]);
-          }
-        callback(JSON.parse(contentFile));});  
+      getProductsFromFile(callback);
     }
 }
