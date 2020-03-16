@@ -3,8 +3,8 @@ const express=require('express');
 const router=express.Router();
 //const rootDir=require('../util/path');
 //const adminData=require('./admin');
-const productsController=require('../controllers/products');
-router.get('/',productsController.getProducts
+const shopController=require('../controllers/shop');
+router.get('/',shopController.getIndex
 //layout a special key that is understood by handlebars and it would not use the default layout if set it to false
 //you cannot set the layout:true, otherwise error happens
 );
@@ -21,4 +21,8 @@ router.get('/',productsController.getProducts
 //Now we're using it in the shop.js in the routes folder
 //so this will point to the routes folder.
 //  ../ and this simply means go up one level
+router.get('/products',shopController.getProducts);
+router.get('/cart',shopController.getCart);
+router.get('/checkout',shopController.getCheckout);
+router.get('/orders',shopController.getOrders);
 module.exports=router;

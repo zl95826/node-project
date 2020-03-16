@@ -3,10 +3,10 @@ const express=require('express');
 const path=require('path');
 //const rootDir=require('../util/path');
 const router=express.Router();
-const productsController=require('../controllers/products');
+const adminController=require('../controllers/admin');
 // /admin/add-product => GET
 
-router.get('/add-product',productsController.getAddProduct
+router.get('/add-product',adminController.getAddProduct
    //res.sendFile(path.join(rootDir,'views','add-product.html'));
    // res.write('<h1>Product Page</h1>');next();//Without next(), the request can't continue its journey, so it will never reach a place 
     //where we might send a response, so use the method send
@@ -19,7 +19,7 @@ router.get('/add-product',productsController.getAddProduct
 //app.use('/product',(req,res,next)=>{
 
 // /admin/add-product => POST
-router.post('/add-product',productsController.postAddProduct
+router.post('/add-product',adminController.postAddProduct
 // (req,res,next)=>{
 //     console.log(req.body);//request gives us the body property but by default, request doesn't try to parse the incoming request body
 //     //we need to register a parser and we do that by adding another middleware.
@@ -30,4 +30,6 @@ router.post('/add-product',productsController.postAddProduct
 
 // exports.routes=router;
 // exports.products=products;
+router.get('/products',adminController.getProducts);
+//router.post('/edit-product',adminController.editProducts);
 module.exports=router;
