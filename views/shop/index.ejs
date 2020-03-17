@@ -11,7 +11,7 @@
         <h1>My Products</h1>
         <p>List of all the products</p>
         <% for (let product of prods) { %>
-        <li><%= product.title %><img src="<%= product.imageUrl%>" alt="<%= product.description %>"> <%= product.price %><button class="btn">Add to Cart</button></li>
+        <li><%= product.title %><img src="<%= product.imageUrl%>" alt="<%= product.description %>"> $ <%= product.price %> <%- include('../includes/add-to-cart.ejs',{product}) %></li>
         
         <% } %>
         <% } else{ %>
