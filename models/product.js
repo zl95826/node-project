@@ -10,19 +10,28 @@ const getProductsFromFile=callback=>{//callback function will be called later on
           else callback(JSON.parse(contentFile));}); 
 }
 module.exports=class Product {
-    constructor(t,imageUrl,price,description) {
+    constructor(id,t,imageUrl,price,description) {
+       this.id=id;
        this.title=t;
        this.imageUrl=imageUrl;
        this.price=price;
        this.description=description;    
     }
     save() {
-      this.id=Math.random().toString();
         getProductsFromFile(products=>{ 
-          products.push(this);
-          fs.writeFile(p,JSON.stringify(products),err=>{//the callback get executed after finishing writing file
-              if(err) throw err;
-              console.log(' write file')});});
+          if(this.id) {//For submit the exsiting but updated product
+            const existingProductIndex=products.findIndex(product=>product.id===this.id);
+            const updatedProducts=[...products];
+            updatedProducts[existingProductIndex]=this;
+            fs.writeFile(p,JSON.stringify(updatedProducts),err=>{console.log(err)});
+          }else {
+            this.id=Math.random().toString();
+            products.push(this);
+            fs.writeFile(p,JSON.stringify(products),err=>{//the callback get executed after finishing writing file
+                if(err) throw err;
+                console.log(' write file');});
+          }
+          });
     }
     static fetchAll(callback) {
       getProductsFromFile(callback);
