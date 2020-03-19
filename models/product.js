@@ -1,5 +1,6 @@
 const fs=require('fs');
 const path=require('path');
+const Cart=require('./cart');
 //const products=[]; 
 //we can save our product to a file instead of an array, so we need to work with the file system and import fs
 const p=path.join(path.dirname(process.mainModule.filename),'data','products.json');
@@ -40,6 +41,15 @@ module.exports=class Product {
       getProductsFromFile(products=>{
         const product=products.find(cur=>cur.id===id);
         cb(product);
+      });
+    }
+    static deleteById(id){
+      getProductsFromFile(products=>{
+        const product=products.find(cur=>cur.id===id);
+        const updatedProducts=products.filter(cur=>cur.id!==id);
+        fs.writeFile(p,JSON.stringify(updatedProducts),err=>{
+          if(!err) {Cart.deleteProduct(id,product.price);}
+          });
       });
     }
 }

@@ -13,6 +13,7 @@
         <% for (let product of prods) { %>
         <li><%= product.title %><img src="<%= product.imageUrl%>" alt="<%= product.description %>"> <%= product.price %><br /><a href="/admin/edit-product/<%=product.id %>?edit=true" class="btn">Edit</a> 
             <form action="/admin/delete-product" method="POST">
+            <input type="hidden" value="<%= product.id %>" name="productId">  
             <button class="btn" type="submit">Delete</button>
             </form></li>
         
