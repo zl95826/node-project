@@ -31,15 +31,17 @@ app.set('views','views');
 //     .catch(err=>{console.log(err);throw err;});
 //  }
 //  mongoConnect();;
+const mongoConnect=require('./util/database');
 
-const adminRoutes=require('./routes/admin');
-const shopRoutes=require('./routes/shop');
+// const adminRoutes=require('./routes/admin');
+// const shopRoutes=require('./routes/shop');
  app.use(bodyParser.urlencoded({extended:false})); 
  app.use(express.static(path.join(__dirname,'public')));//for loading static assets like images, css
- app.use('/admin',adminRoutes);
- app.use(shopRoutes);  
+//  app.use('/admin',adminRoutes);
+//  app.use(shopRoutes);  
  app.use(errorController.get404);
- app.listen(3000);             
+ //app.listen(3000); 
+ mongoConnect(client=>{console.log(client);app.listen(3000);})            
 //app.get('/favicon.ico', (req, res) => res.status(204));
     // app.use('/',(req,res,next)=>{
     //     console.log('Runs!');//This always runs
