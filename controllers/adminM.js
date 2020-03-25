@@ -14,3 +14,10 @@ exports.postAddProduct=(req,res,next)=>{
         res.redirect('/');
     });
 }
+exports.getProducts=(req,res,next)=>{
+    Product.fetchAll()
+    .then(products=>{
+        res.render('admin/products',{prods:products,pageTitle:'All Products',path:'/admin/products'})
+    })
+    .catch(err=>err);
+}

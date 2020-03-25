@@ -13,3 +13,10 @@ exports.getIndex=(req,res,next)=>{
     })
     .catch(err=>err);
 }
+exports.getProduct=(req,res,next)=>{
+    const prodId=req.params.productId;
+    Product.findById(prodId).then(product=>{
+        console.log(product);
+        res.render('shop/product-detail',{product,pageTitle:product.title,path:'products'});})
+        .catch(err=>err);
+}
