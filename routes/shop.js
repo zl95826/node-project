@@ -3,7 +3,7 @@ const express=require('express');
 const router=express.Router();
 //const rootDir=require('../util/path');
 //const adminData=require('./admin');
-const shopController=require('../controllers/shop');
+const shopController=require('../controllers/shopM');
 router.get('/',shopController.getIndex
 //layout a special key that is understood by handlebars and it would not use the default layout if set it to false
 //you cannot set the layout:true, otherwise error happens
@@ -22,10 +22,10 @@ router.get('/',shopController.getIndex
 //so this will point to the routes folder.
 //  ../ and this simply means go up one level
 router.get('/products',shopController.getProducts);
-router.get('/products/:productId', shopController.getProduct);
-router.get('/cart',shopController.getCart);
-router.post('/cart',shopController.postCart);
-router.post('/cart-delete-item', shopController.postCartDeleteProduct);
-router.get('/checkout',shopController.getCheckout);
-router.get('/orders',shopController.getOrders);
+// router.get('/products/:productId', shopController.getProduct);
+// router.get('/cart',shopController.getCart);
+// router.post('/cart',shopController.postCart);
+// router.post('/cart-delete-item', shopController.postCartDeleteProduct);
+// router.get('/checkout',shopController.getCheckout);
+// router.get('/orders',shopController.getOrders);
 module.exports=router;

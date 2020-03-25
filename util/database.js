@@ -20,6 +20,7 @@ const getDb=()=>{
     if(_db) return _db;//return access to that connected database
     throw 'No database found!';
 }
+//The getDb function is so we can access the database connection from outside of the database.js file.
 
 exports.mongoConnect=mongoConnect;
 exports.getDb=getDb;

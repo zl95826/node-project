@@ -1,9 +1,10 @@
 //const http= require('http');//import http module
 const express=require('express'); 
-const path=require('path');
+//const path=require('path');
 //const rootDir=require('../util/path');
 const router=express.Router();
-const adminController=require('../controllers/admin');
+//const adminController=require('../controllers/admin');
+const adminController=require('../controllers/adminM');
 // /admin/add-product => GET
 
 router.get('/add-product',adminController.getAddProduct
@@ -30,8 +31,9 @@ router.post('/add-product',adminController.postAddProduct
 
 // exports.routes=router;
 // exports.products=products;
-router.get('/products',adminController.getProducts);
-router.get('/edit-product/:productId',adminController.getEditProduct);
-router.post('/edit-product',adminController.postEditProduct);
-router.post('/delete-product',adminController.postDeleteProduct);
+
+// router.get('/products',adminController.getProducts);
+// router.get('/edit-product/:productId',adminController.getEditProduct);
+// router.post('/edit-product',adminController.postEditProduct);
+// router.post('/delete-product',adminController.postDeleteProduct);
 module.exports=router;

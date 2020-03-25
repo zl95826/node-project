@@ -34,11 +34,11 @@ app.set('views','views');
 const mongoConnect=require('./util/database').mongoConnect;
 
 const adminRoutes=require('./routes/admin');
-// const shopRoutes=require('./routes/shop');
+const shopRoutes=require('./routes/shop');
  app.use(bodyParser.urlencoded({extended:false})); 
  app.use(express.static(path.join(__dirname,'public')));//for loading static assets like images, css
  app.use('/admin',adminRoutes);
-//  app.use(shopRoutes);  
+ app.use(shopRoutes);  
  app.use(errorController.get404);
  //app.listen(3000); 
  mongoConnect(()=>{app.listen(3000);})            
