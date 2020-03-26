@@ -34,5 +34,15 @@ class Product{
         return db.collection('products')
                 .find({_id:mongodb.ObjectId(prodId)}).next().then(product=>{console.log(product);return product;}).catch(err=>{console.log(err)});
      }
+     updateById(prodId) {
+        const db=getDb();
+        return db.collection('products')
+                .updateOne({_id:mongodb.ObjectId(prodId)},{$set:this}).then(product=>{console.log('update');}).catch(err=>{console.log(err)});
+     }
+     static deleteById(prodId) {
+        const db=getDb();
+        return db.collection('products')
+        .deleteOne({_id:new mongodb.ObjectId(prodId)}).then(result=>{console.log('delete');}).catch(err=>{console.log(err)});
+     }
 }
 module.exports=Product;
