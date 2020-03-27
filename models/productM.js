@@ -2,11 +2,12 @@ const getDb=require('../util/database').getDb;
 const mongodb=require('mongodb');
 //call this function to get access to my database and therefore I can use it to interact with the database.
 class Product{
-    constructor(title,imageUrl,price,description) {
+    constructor(title,imageUrl,price,description,userId) {
         this.title=title;
         this.imageUrl=imageUrl;
         this.price=price;
         this.description=description;  
+        this.userId=userId;
      }
      save() {
         const db= getDb();//getDb does simply return that database instance we connected to

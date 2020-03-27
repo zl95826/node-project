@@ -20,3 +20,7 @@ exports.getProduct=(req,res,next)=>{
         res.render('shop/product-detail',{product,pageTitle:product.title,path:'products'});})
         .catch(err=>err);
 }
+exports.postCart=(req,res,next)=>{
+    const prodId=req.body.productId;
+    
+}
