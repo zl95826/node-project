@@ -43,8 +43,9 @@ const User=require('./models/user');
   .then(user=>{
   ////here the user is just an object with properties, it's the data directly from the database
   //We cannot use the methods of the User model, so we need to create an instance of User
-  req.user=new User(user.name,user.email,user.cart,user._id); 
-  next();})//modify the request object and here must have the next()
+  req.user=new User(user.name,user.email,user.cart,user._id); console.log(req.user);
+  next();
+  })//modify the request object and here must have the next()
   .catch(err=>console.log(err));
  
 });
