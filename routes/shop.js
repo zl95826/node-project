@@ -3,7 +3,8 @@ const express=require('express');
 const router=express.Router();
 //const rootDir=require('../util/path');
 //const adminData=require('./admin');
-const shopController=require('../controllers/shopM');
+//const shopController=require('../controllers/shopM');
+const shopController=require('../controllers/shopG');
 router.get('/',shopController.getIndex
 //layout a special key that is understood by handlebars and it would not use the default layout if set it to false
 //you cannot set the layout:true, otherwise error happens
@@ -21,11 +22,11 @@ router.get('/',shopController.getIndex
 //Now we're using it in the shop.js in the routes folder
 //so this will point to the routes folder.
 //  ../ and this simply means go up one level
-router.get('/products',shopController.getProducts);
-router.get('/products/:productId', shopController.getProduct);
-router.get('/cart',shopController.getCart);
-router.post('/cart',shopController.postCart);
-router.post('/cart-delete-item', shopController.postCartDeleteProduct);
-router.post('/create-order',shopController.postOrder);
-router.get('/orders',shopController.getOrders);
+ router.get('/products',shopController.getProducts);
+ router.get('/products/:productId', shopController.getProduct);
+// router.get('/cart',shopController.getCart);
+// router.post('/cart',shopController.postCart);
+// router.post('/cart-delete-item', shopController.postCartDeleteProduct);
+// router.post('/create-order',shopController.postOrder);
+// router.get('/orders',shopController.getOrders);
 module.exports=router;
