@@ -35,20 +35,19 @@ app.set('views','views');
 const mongoose=require('mongoose');
 const adminRoutes=require('./routes/admin');
 const shopRoutes=require('./routes/shop');
-const User=require('./models/user');
+//const User=require('./models/user');
+const User=require('./models/userG');
  app.use(bodyParser.urlencoded({extended:false})); 
  app.use(express.static(path.join(__dirname,'public')));//for loading static assets like images, css
-//  app.use((req,res,next)=>{
-//   User.findById('5e7d33f11c9d440000ccb3aa')
-//   .then(user=>{
-//   ////here the user is just an object with properties, it's the data directly from the database
-//   //We cannot use the methods of the User model, so we need to create an instance of User
-//   req.user=new User(user.name,user.email,user.cart,user._id); console.log(req.user);
-//   next();
-//   })//modify the request object and here must have the next()
-//   .catch(err=>console.log(err));
+ app.use((req,res,next)=>{
+  User.findById('5e8811272e9ba71c50c00112')
+  .then(user=>{
+  req.user=user;
+  next();
+  })//modify the request object and here must have the next()
+  .catch(err=>console.log(err));
  
-//});
+});
  app.use('/admin',adminRoutes);
  app.use(shopRoutes);  
  app.use(errorController.get404);
@@ -56,8 +55,22 @@ const User=require('./models/user');
  
 //  mongoConnect(()=>{
 //   app.listen(3000);}) 
+
 mongoose.connect('mongodb+srv://bettyMongo:bijd1eIx516mZxYi@cluster0-i8ieo.mongodb.net/library?retryWrites=true&w=majority',{ useNewUrlParser: true })
-.then(result=>{app.listen(3000)})
+.then(result=>{
+  User.findOne().then(user=>{
+    if(!user) {
+      const user=new User({
+        name:'betty',
+        email:'mongoose@test.com',
+        cart:{
+            items:[]
+        }
+        });
+        user.save();
+    }
+  });
+  app.listen(3000)})
 .catch(err=>err);           
 //app.get('/favicon.ico', (req, res) => res.status(204));
     // app.use('/',(req,res,next)=>{
@@ -91,5 +104,6 @@ mongoose.connect('mongodb+srv://bettyMongo:bijd1eIx516mZxYi@cluster0-i8ieo.mongo
 //the app here actually happens to be a valid request handler, so you can pass app to createServer.
 //So it sets up a certain way of handling incoming requests.
 //server.listen(3000);
+
 //app.listen(3000);
 //express shorten the code: const server=http.createServer(app);server.listen(3000);

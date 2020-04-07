@@ -16,6 +16,11 @@ const productSchema=new Schema({
     imageUrl:{
         type:String,
         required:true
+    },
+    userId:{
+        type:Schema.Types.ObjectId,
+        ref:'users',//ref takes a string, tell mongoose hey which other mongoose model is actually related to the data in that field.
+        required:true
     }
 
 })
