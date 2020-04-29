@@ -2,7 +2,8 @@ const Product=require('../models/productMgoose');
 exports.getAddProduct=(req,res,next)=>{
     res.render('admin/edit-product',{
         pageTitle:'Add Product',
-        path:'/admin/add-product', 
+        path:'/admin/add-product',
+        isAuthenticated: req.session.isLoggedIn, 
         editing:false, activeAddProduct:true,formsCSS:true,productCSS:true})};
 
 exports.postAddProduct=(req,res,next)=>{
@@ -21,7 +22,7 @@ exports.postAddProduct=(req,res,next)=>{
 exports.getProducts=(req,res,next)=>{
     Product.find()
     .then(products=>{
-        res.render('admin/products',{prods:products,pageTitle:'All Products',path:'/admin/products'})
+        res.render('admin/products',{prods:products,pageTitle:'All Products',path:'/admin/products',isAuthenticated: req.session.isLoggedIn})
     })
     .catch(err=>err);
 }
@@ -36,7 +37,8 @@ exports.getEditProduct=(req,res,next)=>{
         pageTitle:'Edit Product',
         path:'/admin/edit-product',
         editing:editMode,
-        product:product
+        product:product,
+        isAuthenticated: req.session.isLoggedIn
     });})
     .catch(err=>console.log(err));
 }

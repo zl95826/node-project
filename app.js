@@ -35,41 +35,56 @@ app.set('views','views');
 const mongoose=require('mongoose');
 const adminRoutes=require('./routes/admin');
 const shopRoutes=require('./routes/shop');
-//const User=require('./models/user');
+const authRoutes = require('./routes/auth');
+const session=require('express-session');
+const MongoDBStore=require('connect-mongodb-session')(session);
 const User=require('./models/userG');
+const MONGODB_URI='mongodb+srv://bettyMongo:bijd1eIx516mZxYi@cluster0-i8ieo.mongodb.net/library?retryWrites=true&w=majority';
+const store=new MongoDBStore({
+  uri: MONGODB_URI,//have to know in which database server to store the session data
+  collection:'session'//you need to to define the collection where your sessions will be stored
+})
  app.use(bodyParser.urlencoded({extended:false})); 
  app.use(express.static(path.join(__dirname,'public')));//for loading static assets like images, css
+ app.use(session({secret:'fghhjjjtddetyy',resave:false,saveUninitialized:false,store:store}))
  app.use((req,res,next)=>{
-  User.findById('5e8811272e9ba71c50c00112')
-  .then(user=>{
-  req.user=user;
-  next();
-  })//modify the request object and here must have the next()
+  // User.findById('5e8811272e9ba71c50c00112')
+  // .then(user=>{
+  // req.user=user;
+  // next();
+  if(!req.session.user) {return next();}
+  User.findById(req.session.user._id)
+  .then(user => {
+    req.user = user;
+    next();
+  })//modify the request object, add user property and here must have the next()
   .catch(err=>console.log(err));
  
 });
  app.use('/admin',adminRoutes);
  app.use(shopRoutes);  
+ app.use(authRoutes);
  app.use(errorController.get404);
+
  //app.listen(3000); 
  
 //  mongoConnect(()=>{
 //   app.listen(3000);}) 
 
-mongoose.connect('mongodb+srv://bettyMongo:bijd1eIx516mZxYi@cluster0-i8ieo.mongodb.net/library?retryWrites=true&w=majority',{ useNewUrlParser: true })
+mongoose.connect(MONGODB_URI,{ useNewUrlParser: true })
 .then(result=>{
-  User.findOne().then(user=>{
-    if(!user) {
-      const user=new User({
-        name:'betty',
-        email:'mongoose@test.com',
-        cart:{
-            items:[]
-        }
-        });
-        user.save();
-    }
-  });
+  // User.findOne().then(user=>{
+  //   if(!user) {
+  //     const user=new User({
+  //       name:'betty',
+  //       email:'mongoose@test.com',
+  //       cart:{
+  //           items:[]
+  //       }
+  //       });
+  //       user.save();
+  //   }
+  // });we dont need the dummy user anymore
   app.listen(3000)})
 .catch(err=>err);           
 //app.get('/favicon.ico', (req, res) => res.status(204));
