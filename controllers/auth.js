@@ -1,4 +1,5 @@
 const User=require('../models/userG');
+const bcrypt=require('bcryptjs');
 exports.getLogin=(req,res,next)=>{
 
         res.render('auth/login',{
@@ -36,15 +37,18 @@ exports.postSignup=(req,res,next)=>{
         .then(userDoc=>{
                 if(userDoc) {alert('This email already exists.')
                         return res.redirect('/signup');
-                }
-                const user=new User({
-                  email:email,
-                  password:password,
-                  cart:{items:[]}      
-                 });
-                 return user.save();       
+                }//return a promise object  
+                return bcrypt.hash(password,12)
+                       .then(hashedPassword=>{
+                        const user=new User({
+                                email:email,
+                                password:hashedPassword,
+                                cart:{items:[]}      
+                               });
+                               return user.save();    
+                })
+                .then(result=>{res.redirect('/login');})
         })
-        .then(result=>{res.redirect('/login');})
         .catch(err=>{console.log(err)});
 
 }
