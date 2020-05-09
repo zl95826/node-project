@@ -11,8 +11,11 @@
         <h1>My Products</h1>
         <p>List of all the products</p>
         <% for (let product of prods) { %>
-        <li><%= product.title %><img src="<%= product.imageUrl%>" alt="<%= product.description %>"> $ <%= product.price %> <%- include('../includes/add-to-cart.ejs',{product}) %></li>
-        
+        <li><%= product.title %><img src="<%= product.imageUrl%>" alt="<%= product.description %>"> $ <%= product.price %> 
+            <a href="/products/<%= product._id %>" class="btn">Details</a>
+            <% if (isAuthenticated) { %>
+            <%- include('../includes/add-to-cart.ejs',{product}) %></li>
+            <% } %>
         <% } %>
         <% } else{ %>
         <h1>No Products</h1>
