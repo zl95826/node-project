@@ -7,8 +7,8 @@ const router=express.Router();
 //const adminController=require('../controllers/adminM');
 const adminController=require('../controllers/adminG');
 // /admin/add-product => GET
-
-router.get('/add-product',adminController.getAddProduct
+const isAuth=require('../middleware/is-auth');
+router.get('/add-product',isAuth, adminController.getAddProduct
    //res.sendFile(path.join(rootDir,'views','add-product.html'));
    // res.write('<h1>Product Page</h1>');next();//Without next(), the request can't continue its journey, so it will never reach a place 
     //where we might send a response, so use the method send
@@ -21,7 +21,7 @@ router.get('/add-product',adminController.getAddProduct
 //app.use('/product',(req,res,next)=>{
 
 // /admin/add-product => POST
-router.post('/add-product',adminController.postAddProduct
+router.post('/add-product',isAuth, adminController.postAddProduct
 // (req,res,next)=>{
 //     console.log(req.body);//request gives us the body property but by default, request doesn't try to parse the incoming request body
 //     //we need to register a parser and we do that by adding another middleware.
@@ -33,8 +33,8 @@ router.post('/add-product',adminController.postAddProduct
 // exports.routes=router;
 // exports.products=products;
 
-  router.get('/products',adminController.getProducts);
-  router.get('/edit-product/:productId',adminController.getEditProduct);
-  router.post('/edit-product',adminController.postEditProduct);
-  router.post('/delete-product',adminController.postDeleteProduct);
+  router.get('/products',isAuth,adminController.getProducts);
+  router.get('/edit-product/:productId',isAuth,adminController.getEditProduct);
+  router.post('/edit-product',isAuth,adminController.postEditProduct);
+  router.post('/delete-product',isAuth,adminController.postDeleteProduct);
 module.exports=router;

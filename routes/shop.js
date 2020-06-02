@@ -5,6 +5,7 @@ const router=express.Router();
 //const adminData=require('./admin');
 //const shopController=require('../controllers/shopM');
 const shopController=require('../controllers/shopG');
+const isAuth=require('../middleware/is-auth');
 router.get('/',shopController.getIndex
 //layout a special key that is understood by handlebars and it would not use the default layout if set it to false
 //you cannot set the layout:true, otherwise error happens
@@ -24,9 +25,9 @@ router.get('/',shopController.getIndex
 //  ../ and this simply means go up one level
  router.get('/products',shopController.getProducts);
  router.get('/products/:productId', shopController.getProduct);
- router.get('/cart',shopController.getCart);
- router.post('/cart',shopController.postCart);
- router.post('/cart-delete-item', shopController.postCartDeleteProduct);
- router.post('/create-order',shopController.postOrder);
- router.get('/orders',shopController.getOrders);
+ router.get('/cart',isAuth,shopController.getCart);
+ router.post('/cart',isAuth,shopController.postCart);
+ router.post('/cart-delete-item', isAuth,shopController.postCartDeleteProduct);
+ router.post('/create-order',isAuth,shopController.postOrder);
+ router.get('/orders',isAuth,shopController.getOrders);
 module.exports=router;

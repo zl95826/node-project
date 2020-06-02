@@ -14,6 +14,7 @@ const app=express();//create an express application and stored it in a constant 
    //Express handlebars is not built-in, but pug is,so pug doesn't need this step.
    //the first argument we define a name for our engine                
 //app.set('view engine','hbs');
+var cors = require('cors');
 const errorController=require('./controllers/error');
 app.set('view engine','ejs');
 app.set('views','views');
@@ -38,20 +39,31 @@ const shopRoutes=require('./routes/shop');
 const authRoutes = require('./routes/auth');
 const session=require('express-session');
 const MongoDBStore=require('connect-mongodb-session')(session);
+const flash=require('connect-flash');
 const User=require('./models/userG');
 const MONGODB_URI='mongodb+srv://bettyMongo:bijd1eIx516mZxYi@cluster0-i8ieo.mongodb.net/library?retryWrites=true&w=majority';
 const store=new MongoDBStore({
   uri: MONGODB_URI,//have to know in which database server to store the session data
   collection:'session'//you need to to define the collection where your sessions will be stored
-})
+});
+//app.use(cors());
  app.use(bodyParser.urlencoded({extended:false})); 
  app.use(express.static(path.join(__dirname,'public')));//for loading static assets like images, css
- app.use(session({secret:'fghhjjjtddetyy',resave:false,saveUninitialized:false,store:store}))
+
+ app.use(session({secret:'fghhjjjtddetyy',resave:false,saveUninitialized:false,store:store}));
+ //The session middleware handles all things for us, i.e., creating the session, setting the session cookie and creating the session object in req object.
+ app.use(flash());//now we can use that flash middleware anywhere in our application on the request object
  app.use((req,res,next)=>{
   // User.findById('5e8811272e9ba71c50c00112')
   // .then(user=>{
   // req.user=user;
   // next();
+  if(req.session.page_views){
+    req.session.page_views++;
+ } else {
+    req.session.page_views = 1;
+ }
+    console.log(req.session,req.session.id,req.sessionID);
   if(!req.session.user) {return next();}
   User.findById(req.session.user._id)
   .then(user => {
