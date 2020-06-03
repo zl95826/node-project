@@ -18,9 +18,13 @@ exports.getLogin=(req,res,next)=>{
     
 }
 exports.getSignup=(req,res,next)=>{
+        let message=req.flash('error');
+        if(message.length>0) {message=message[0];}
+        else {message=null;}
         res.render('auth/signup',{
          path:'/signup',
          pageTitle:'Signup',
+         errorMessage:message,
         isAuthenticated:false
         })
 }
@@ -57,20 +61,22 @@ exports.postSignup=(req,res,next)=>{
         const email=req.body.email;
         const password=req.body.password;
         const confirmPassword=req.body.confirmPassword;
-        const errors=validationResult(req);
+        const errors=validationResult(req);//validationResult will be a function that allows us to gather all the errors in a req object
         if(!errors.isEmpty()) {console.log('error object', errors.array());
                 return res.status(422).render('auth/signup',{
                         path:'/signup',
                         pageTitle:'Signup',
+                        errorMessage:errors.array()[0].msg,//because withMessage() in auth.js, feedback is changed
                        isAuthenticated:false
                        });
         }
         User.findOne({email:email})
         .then(userDoc=>{
-                if(userDoc) {alert('This email already exists.')
+                if(userDoc) {//alert('This email already exists.');
+                req.flash('error','This email already exists.');
                         return res.redirect('/signup');
-                }//return a promise object  
-                return bcrypt.hash(password,12)
+                } 
+                return bcrypt.hash(password,12)//return a promise object 
                        .then(hashedPassword=>{
                         const user=new User({
                                 email:email,
