@@ -2,7 +2,7 @@ const User=require('../models/userG');
 const bcrypt=require('bcryptjs');
 const {validationResult}=require('express-validator');
 const sgMail = require('@sendgrid/mail');
-const SENDGRID_API_KEY = 'SG.secret';
+const SENDGRID_API_KEY = 'SG.U-secret';
 sgMail.setApiKey(SENDGRID_API_KEY);
 
 exports.getLogin=(req,res,next)=>{
@@ -70,13 +70,8 @@ exports.postSignup=(req,res,next)=>{
                        isAuthenticated:false
                        });
         }
-        User.findOne({email:email})
-        .then(userDoc=>{
-                if(userDoc) {//alert('This email already exists.');
-                req.flash('error','This email already exists.');
-                        return res.redirect('/signup');
-                } 
-                return bcrypt.hash(password,12)//return a promise object 
+        
+                bcrypt.hash(password,12)//return a promise object 
                        .then(hashedPassword=>{
                         const user=new User({
                                 email:email,
@@ -93,19 +88,17 @@ exports.postSignup=(req,res,next)=>{
                                 text: 'and easy to do anywhere, even with Node.js'+result.email,
                                 html: '<strong>and easy to do anywhere, even with Node.js</strong> '+result.email
                               };
-                               
+                           
                               sgMail.send(msg).then(() => {}, error => {
-                                console.error(error);
+                                console.log(error);
                              
                                 if (error.response) {
-                                  console.error(error.response.body)
+                                  console.log(error.response.body)
                                 }
                               });     
                         
                        })
-        })
-        .catch(err=>{console.log(err)});
-
+        
 }
 
 exports.postLogout = (req, res, next) => {
