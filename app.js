@@ -33,6 +33,8 @@ app.set('views','views');
 //  }
 //  mongoConnect();;
 //const mongoConnect=require('./util/database').mongoConnect;
+//const { v4: uuidv4 } = require('uuid');
+const { uuid } = require('uuidv4');
 const mongoose=require('mongoose');
 const adminRoutes=require('./routes/admin');
 const shopRoutes=require('./routes/shop');
@@ -41,13 +43,30 @@ const session=require('express-session');
 const MongoDBStore=require('connect-mongodb-session')(session);
 const flash=require('connect-flash');
 const User=require('./models/userG');
+const multer=require('multer');
 const MONGODB_URI='mongodb+srv://bettyMongo:bijd1eIx516mZxYi@cluster0-i8ieo.mongodb.net/library?retryWrites=true&w=majority';
 const store=new MongoDBStore({
   uri: MONGODB_URI,//have to know in which database server to store the session data
   collection:'session'//you need to to define the collection where your sessions will be stored
 });
 //app.use(cors());
- app.use(bodyParser.urlencoded({extended:false})); 
+const fileStorage=multer.diskStorage({
+  destination:(req,file,cb)=>{cb(null,'images')},
+  filename:(req,file,cb)=>{ let extension = file.originalname.split('.').pop();         
+  cb(null, uuid()+'.'+extension);
+  //cb(null, file.fieldname);
+}
+});
+ const fileFilter=(req,file,cb)=>{
+   if(file.mimetype==='image/png'||file.mimetype==='image/jpg'||file.mimetype==='image/jpeg') {
+    cb(null,true);//true means I want to store the file
+   }else{
+    cb(null,false);
+   }
+   
+ }
+ app.use(bodyParser.urlencoded({extended:false}));
+ app.use(multer({storage:fileStorage,fileFilter:fileFilter}).single('image'));
  app.use(express.static(path.join(__dirname,'public')));//for loading static assets like images, css
 
  app.use(session({secret:'fghhjjjtddetyy',resave:false,saveUninitialized:false,store:store}));
