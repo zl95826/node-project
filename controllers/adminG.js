@@ -9,10 +9,11 @@ exports.getAddProduct=(req,res,next)=>{
 exports.postAddProduct=(req,res,next)=>{
     const title=req.body.title;
     //const imageUrl=req.body.image;
-    const imageUrl=req.file;
+    const image=req.file;
     const price=req.body.price;
     const description=req.body.description;
-    console.log(imageUrl);
+    console.log(image);
+    const imageUrl=image.path;
     const product=new Product({title:title,imageUrl:imageUrl,price:price,description:description,userId:req.user});
     //req.user is the entire user object, not just the id and mongoose will pick the id from that object
     product.save()

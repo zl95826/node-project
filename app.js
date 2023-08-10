@@ -51,7 +51,7 @@ const store=new MongoDBStore({
 });
 //app.use(cors());
 const fileStorage=multer.diskStorage({
-  destination:(req,file,cb)=>{cb(null,'images')},
+  destination:(req,file,cb)=>{cb(null,'images/')},
   filename:(req,file,cb)=>{ let extension = file.originalname.split('.').pop();         
   cb(null, uuid()+'.'+extension);
   //cb(null, file.fieldname);
